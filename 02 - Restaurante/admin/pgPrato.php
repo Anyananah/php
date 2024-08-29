@@ -19,7 +19,7 @@ require_once 'menu.php';
     <div class="container mt-3">
         <!-- Botão Modal Cadastro - Início -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCadastro">
-            Adicionar Cardápio
+            Adicionar Prato
         </button>
 
         <!-- MODAL CADASTRO -->
@@ -27,15 +27,24 @@ require_once 'menu.php';
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Cardápio</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Prato</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="opCardapio.php?acao=cadastrar" method="post" enctype="multipart/form-data">
+                        <form action="opPrato.php?acao=cadastrar" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
-                                <label class="exampleFormControlInput1" class="form-label">Cardápio</label>
-                                <input type="text" class="form-control" name="txt_cardapio"
-                                    placeholder="Digite o nome do cardápio">
+                                <label class="exampleFormControlInput1" class="form-label">Prato</label>
+                                <input type="text" class="form-control" name="txt_prato"
+                                    placeholder="Digite o nome do Prato">
+                            </div>
+                            <div class="mb-3">
+                                 <label class="exampleFormControlInput1" class="form-label">Selecione o Cardápio</label>
+                                 <select class="form-select" name="txt_cardapio">
+                                    <?php $sql = $pdo->query('SELECT * FROM cardapios ORDER BY cardapio');
+                                     while ($linha = $sql->fetch(PDO::FETCH_ASSOC)) { ?>
+                                    <option value="<?php echo $linha['idcardapio']?>"><?php echo $linha['cardapio']?></option>
+                                    <?php }; ?>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">Foto</label>
@@ -49,23 +58,26 @@ require_once 'menu.php';
                 </div>
             </div>
         </div>
+        <!-- MODAL CADASTRO FIM -->
         <!-- INICIO DA LISTAGEM -->
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Cardápio</th>
+                    <th scope="col">Prato</th>
                     <th scope="col">Foto</th>
                     <th scope="col">Ação</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $lista = $pdo->query('SELECT * FROM cardapios');
+                $lista = $pdo->query('SELECT p.idprato, p.prato, p.foto, c.cardapio, c.idcardapio FROM pratos p INNER JOIN cardapios c ON p.idcardapio = c.idcardapio');
                 while ($linha = $lista->fetch(PDO::FETCH_ASSOC)) {
                     ?>
                     <tr>
-                        <th scope="row"><?php echo $linha['idcardapio'] ?></th>
+                        <th scope="row"><?php echo $linha['idprato'] ?></th>
+                        <th><?php echo $linha['prato'] ?></th>
                         <td><?php echo $linha['cardapio'] ?></td>
                         <td>
                             <img src="img/<?php echo $linha['foto'] ?>" width="100px" alt="">
@@ -73,28 +85,28 @@ require_once 'menu.php';
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modalEditar<?php echo $linha['idcardapio'] ?>">
+                                data-bs-target="#modalEditar<?php echo $linha['idprato'] ?>">
                                 Editar
                             </button>
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#modalExcluir<?php echo $linha['idcardapio'] ?>">
+                                data-bs-target="#modalExcluir<?php echo $linha['idprato'] ?>">
                                 Excluir
                             </button>
                         </td>
                     </tr>
 
                     <!-- MODAL EXCLUIR - INICIO -->
-                    <div class="modal fade" id="modalExcluir<?php echo $linha['idcardapio'] ?>" tabindex="-1"
+                    <div class="modal fade" id="modalExcluir<?php echo $linha['idprato'] ?>" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja excluir o Cardápio?</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja excluir o Prato?</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <a href="opCardapio.php?acao=excluir&id=<?php echo $linha['idcardapio'] ?>&foto=<?php echo $linha['foto'] ?>"
+                                    <a href="opPrato.php?acao=excluir&id=<?php echo $linha['idprato'] ?>&foto=<?php echo $linha['foto'] ?>"
                                         class="btn btn-primary">SIM</a>
                                     <button class="btn btn-danger" data-bs-dismiss="modal">NÃO</button>
                                 </div>
@@ -103,22 +115,23 @@ require_once 'menu.php';
                     </div>
 
                     <!-- MODAL EDITAR - INICIO -->
-                    <div class="modal fade" id="modalEditar<?php echo $linha['idcardapio'] ?>" tabindex="-1"
+                    <div class="modal fade" id="modalEditar<?php echo $linha['idprato'] ?>" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja editar o Cardápio?</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja editar o Prato?</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="opCardapio.php?acao=editar&id=<?php echo $linha['idcardapio'] ?>&foto=<?php echo $linha['foto'] ?>" method="post"
-                                        enctype="multipart/form-data">
+                                    <form
+                                        action="opPrato.php?acao=editar&id=<?php echo $linha['idprato'] ?>&foto=<?php echo $linha['foto'] ?>"
+                                        method="post" enctype="multipart/form-data">
                                         <div class="mb-3">
-                                            <label class="exampleFormControlInput1" class="form-label">Cardápio</label>
-                                            <input type="text" class="form-control" name="txt_cardapio"
-                                                placeholder="Digite o nome do cardápio" value="<?php echo $linha['cardapio']?>">
+                                            <label class="exampleFormControlInput1" class="form-label">Prato</label>
+                                            <input type="text" class="form-control" name="txt_prato"
+                                                placeholder="Digite o nome do Prato" value="<?php echo $linha['prato'] ?>">
                                         </div>
                                         <div class="mb-3">
                                             <label for="formFile" class="form-label">Foto</label>
@@ -135,8 +148,9 @@ require_once 'menu.php';
                     <!-- MODAL EDITAR - FIM -->
 
                     <?php
-                     };
-                    ?>
+                }
+                ;
+                ?>
             </tbody>
         </table>
         <!-- FIM DA LISTAGEM -->

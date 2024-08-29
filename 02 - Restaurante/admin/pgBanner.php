@@ -19,7 +19,7 @@ require_once 'menu.php';
     <div class="container mt-3">
         <!-- Botão Modal Cadastro - Início -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCadastro">
-            Adicionar Cardápio
+            Adicionar Banner
         </button>
 
         <!-- MODAL CADASTRO -->
@@ -27,16 +27,11 @@ require_once 'menu.php';
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Cardápio</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Banner</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="opCardapio.php?acao=cadastrar" method="post" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label class="exampleFormControlInput1" class="form-label">Cardápio</label>
-                                <input type="text" class="form-control" name="txt_cardapio"
-                                    placeholder="Digite o nome do cardápio">
-                            </div>
+                        <form action="opBanner.php?acao=cadastrar" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="formFile" class="form-label">Foto</label>
                                 <input class="form-control" type="file" name="file_foto">
@@ -54,72 +49,65 @@ require_once 'menu.php';
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Cardápio</th>
-                    <th scope="col">Foto</th>
+                    <th scope="col">Banner</th>
                     <th scope="col">Ação</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $lista = $pdo->query('SELECT * FROM cardapios');
+                $lista = $pdo->query('SELECT * FROM banner');
                 while ($linha = $lista->fetch(PDO::FETCH_ASSOC)) {
                     ?>
                     <tr>
-                        <th scope="row"><?php echo $linha['idcardapio'] ?></th>
-                        <td><?php echo $linha['cardapio'] ?></td>
+                        <th scope="row"><?php echo $linha['idbanner'] ?></th>
                         <td>
                             <img src="img/<?php echo $linha['foto'] ?>" width="100px" alt="">
 
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#modalEditar<?php echo $linha['idcardapio'] ?>">
+                                data-bs-target="#modalEditar<?php echo $linha['idbanner'] ?>">
                                 Editar
                             </button>
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#modalExcluir<?php echo $linha['idcardapio'] ?>">
+                                data-bs-target="#modalExcluir<?php echo $linha['idbanner'] ?>">
                                 Excluir
                             </button>
                         </td>
                     </tr>
 
                     <!-- MODAL EXCLUIR - INICIO -->
-                    <div class="modal fade" id="modalExcluir<?php echo $linha['idcardapio'] ?>" tabindex="-1"
+                    <div class="modal fade" id="modalExcluir<?php echo $linha['idbanner'] ?>" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja excluir o Cardápio?</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja excluir o Banner?</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <a href="opCardapio.php?acao=excluir&id=<?php echo $linha['idcardapio'] ?>&foto=<?php echo $linha['foto'] ?>"
+                                    <a href="opBanner.php?acao=excluir&id=<?php echo $linha['idbanner'] ?>&foto=<?php echo $linha['foto'] ?>"
                                         class="btn btn-primary">SIM</a>
                                     <button class="btn btn-danger" data-bs-dismiss="modal">NÃO</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                    <!-- MODAL EXCLUIR - FIM -->
                     <!-- MODAL EDITAR - INICIO -->
-                    <div class="modal fade" id="modalEditar<?php echo $linha['idcardapio'] ?>" tabindex="-1"
+                    <div class="modal fade" id="modalEditar<?php echo $linha['idbanner'] ?>" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja editar o Cardápio?</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Deseja editar o Banner?</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="opCardapio.php?acao=editar&id=<?php echo $linha['idcardapio'] ?>&foto=<?php echo $linha['foto'] ?>" method="post"
+                                    <form action="opBanner.php?acao=editar&id=<?php echo $linha['idbanner'] ?>&foto=<?php echo $linha['foto'] ?>" method="post"
                                         enctype="multipart/form-data">
-                                        <div class="mb-3">
-                                            <label class="exampleFormControlInput1" class="form-label">Cardápio</label>
-                                            <input type="text" class="form-control" name="txt_cardapio"
-                                                placeholder="Digite o nome do cardápio" value="<?php echo $linha['cardapio']?>">
-                                        </div>
                                         <div class="mb-3">
                                             <label for="formFile" class="form-label">Foto</label>
                                             <input class="form-control" type="file" name="file_foto">
