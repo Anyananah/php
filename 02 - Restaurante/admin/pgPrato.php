@@ -38,12 +38,14 @@ require_once 'menu.php';
                                     placeholder="Digite o nome do Prato">
                             </div>
                             <div class="mb-3">
-                                 <label class="exampleFormControlInput1" class="form-label">Selecione o Cardápio</label>
-                                 <select class="form-select" name="txt_cardapio">
+                                <label class="exampleFormControlInput1" class="form-label">Selecione o Cardápio</label>
+                                <select class="form-select" name="txt_cardapio">
                                     <?php $sql = $pdo->query('SELECT * FROM cardapios ORDER BY cardapio');
-                                     while ($linha = $sql->fetch(PDO::FETCH_ASSOC)) { ?>
-                                    <option value="<?php echo $linha['idcardapio']?>"><?php echo $linha['cardapio']?></option>
-                                    <?php }; ?>
+                                    while ($linha = $sql->fetch(PDO::FETCH_ASSOC)) { ?>
+                                        <option value="<?php echo $linha['idcardapio'] ?>"><?php echo $linha['cardapio'] ?>
+                                        </option>
+                                    <?php }
+                                    ; ?>
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -64,8 +66,8 @@ require_once 'menu.php';
             <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Cardápio</th>
                     <th scope="col">Prato</th>
+                    <th scope="col">Cardápio</th>
                     <th scope="col">Foto</th>
                     <th scope="col">Ação</th>
                 </tr>
@@ -132,6 +134,21 @@ require_once 'menu.php';
                                             <label class="exampleFormControlInput1" class="form-label">Prato</label>
                                             <input type="text" class="form-control" name="txt_prato"
                                                 placeholder="Digite o nome do Prato" value="<?php echo $linha['prato'] ?>">
+                                        </div>
+                                        <div class="class mb-3">
+                                            <label for="" class="class form-label">Selecione seu Cardápio</label>
+                                            <select class="form-select" name="txt_cardapio">
+                                                <?php $sql = $pdo->query('SELECT * FROM cardapios ORDER BY cardapio');
+                                                while ($linhas = $sql->fetch(PDO::FETCH_ASSOC)) { 
+                                                    if($linha['idcardapio'] == $linhas['idcardapio']){
+                                                    ?>
+                                                    <option value="<?php echo $linhas['idcardapio'] ?>">
+                                                        <?php echo $linhas['cardapio'] ?></option>
+                                                <?php } else {  ?>
+                                                    <option value="<?php echo $linhas['idcardapio'] ?>">
+                                                    <?php echo $linhas['cardapio'] ?></option>
+                                                <?php }  }; ?>
+                                            </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="formFile" class="form-label">Foto</label>

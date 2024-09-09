@@ -45,13 +45,15 @@ if(isset($_GET['acao']) && $_GET['acao'] == 'excluir'){
 //EDITAR
 if(isset($_GET['acao']) && $_GET['acao'] == 'editar'){
     $id = $_GET['id'];
+    $id = $_POST['txt_cardapio'];
     $fotodb = $_GET['foto'];
     
     if ($_FILES['file_foto']['size'] == 0){
         // echo 'Sem foto';
-        $edit = $pdo->prepare("UPDATE pratos SET prato = ? WHERE idprato = ?");
+        $edit = $pdo->prepare("UPDATE pratos SET prato = ?, idcardapio = ?, foto = ? WHERE idprato = ?, ?");
         $edit->bindValue(1, $prato);
-        $edit->bindValue(2, $id);
+        $edit->bindValue(2, $idcardapio);
+        $edit->bindValue(3, $id);
         $edit->execute();
 
         header("Location: pgPrato.php");
